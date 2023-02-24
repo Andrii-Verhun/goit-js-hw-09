@@ -19,7 +19,7 @@ img {
 
 .timer {
   display: flex;
-  gap: 0.8rem;
+  gap: 1.3rem;
 }
 
 .field {
@@ -29,7 +29,7 @@ img {
 
 .value {
   text-align: center;
-  font-size: 2rem;
+  font-size: 3rem;
   font-weight: 500;
 }
 

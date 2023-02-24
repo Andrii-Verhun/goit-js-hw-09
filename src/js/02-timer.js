@@ -1,5 +1,7 @@
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
+import Notiflix from 'notiflix';
+import "notiflix/dist/notiflix-3.2.6.min.css";
 
 const startTimer = document.querySelector('[data-start]');
 startTimer.setAttribute('disabled', 'true');
@@ -7,7 +9,13 @@ const timerDays = document.querySelector('[data-days]');
 const timerHours = document.querySelector('[data-hours]');
 const timerMinutes = document.querySelector('[data-minutes]');
 const timerSeconds = document.querySelector('[data-seconds]');
+const resetTimer = document.createElement('button');
+resetTimer.textContent = 'Reset';
+resetTimer.setAttribute('type', 'button');
+resetTimer.setAttribute('disabled', 'true');
+startTimer.after(resetTimer);
 let timerValueMs = 0;
+let intervalId = null;
 
 const options = {
   enableTime: true,
@@ -16,8 +24,7 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates) {
       if (selectedDates[0] - Date.now() <= 0) {
-        startTimer.setAttribute('disabled', 'true');
-        window.alert("Please choose a date in the future");
+          Notiflix.Notify.failure('Please choose a date in the future');
         };
 
       if (selectedDates[0] - Date.now() > 0) {
@@ -50,13 +57,15 @@ const addLeadingZero = (value) => {
 };
 
 const startingTimer = (timerValue) => {
-    setInterval(() => {
+    startTimer.setAttribute('disabled', 'true');
+    resetTimer.removeAttribute('disabled');
+    intervalId = setInterval(() => {
         const time = convertMs(timerValue);
         addLeadingZero(time);
-        timerDays.textContent = time.days
-        timerHours.textContent = time.hours
-        timerMinutes.textContent = time.minutes
-        timerSeconds.textContent = time.seconds
+        timerDays.textContent = time.days;
+        timerHours.textContent = time.hours;
+        timerMinutes.textContent = time.minutes;
+        timerSeconds.textContent = time.seconds;
         timerValue -= 1000;
     }, 1000);
 
@@ -64,4 +73,13 @@ const startingTimer = (timerValue) => {
 
 startTimer.addEventListener('click', () => {
     startingTimer(timerValueMs);
+});
+
+resetTimer.addEventListener('click', () => {
+    resetTimer.setAttribute('disabled', 'true');
+    clearInterval(intervalId);
+    timerDays.textContent = '00';
+    timerHours.textContent = '00';
+    timerMinutes.textContent = '00';
+    timerSeconds.textContent = '00';
 });
