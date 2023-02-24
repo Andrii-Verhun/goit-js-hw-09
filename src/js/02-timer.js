@@ -3,6 +3,10 @@ import "flatpickr/dist/flatpickr.min.css";
 
 const startTimer = document.querySelector('[data-start]');
 startTimer.setAttribute('disabled', 'true');
+const timerDays = document.querySelector('[data-days]');
+const timerHours = document.querySelector('[data-hours]');
+const timerMinutes = document.querySelector('[data-minutes]');
+const timerSeconds = document.querySelector('[data-seconds]');
 let timerValueMs = 0;
 
 const options = {
@@ -49,10 +53,11 @@ const startingTimer = (timerValue) => {
     setInterval(() => {
         const time = convertMs(timerValue);
         addLeadingZero(time);
-        console.log(time.minutes);
-        console.log(time);
+        timerDays.textContent = time.days
+        timerHours.textContent = time.hours
+        timerMinutes.textContent = time.minutes
+        timerSeconds.textContent = time.seconds
         timerValue -= 1000;
-
     }, 1000);
 
 };
